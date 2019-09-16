@@ -1,0 +1,29 @@
+version: '2.1'
+
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /etc/ssl/certs:/etc/nginx/certs 
+
+  backend:
+    image: backend
+    build: .
+    environment:
+      - VIRTUAL_HOST=trendi.gq
+    restart: always
+    ports:
+      - 3000:3000
+    links:
+      - mongo
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - "27017:27017"
+

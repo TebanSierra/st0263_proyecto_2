@@ -6,15 +6,19 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    environment:
+      #- VIRTUAL_PROTO=https
+      - VIRTUAL_PORT=443
+      #- VIRTUAL_HOST=proyecto2.cruizgo1.tk
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - /etc/ssl/certs:/etc/nginx/certs 
+      - /etc/letsencrypt/archive/proyecto2.cruizgo1.tk:/etc/nginx/certs
 
   backend:
     image: backend
     build: .
     environment:
-      - VIRTUAL_HOST=trendi.gq
+      - VIRTUAL_HOST=proyecto2.cruizgo1.tk
     restart: always
     ports:
       - 3000:3000
